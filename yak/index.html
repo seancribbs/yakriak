@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>YakRiak - The Riak-powered Chatroom</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="cookie.js"></script>
+    <script type="text/javascript" src="json2.js"></script>
+    <script type="text/javascript" src="riak.js"></script>
+    <script type="text/javascript" src="md5-min.js"></script>
+    <script type="text/javascript" src="yakriak.js"></script>
+  </head>
+  <body>
+    <h1>YakRiak: The Riak-powered Chatroom</h1>
+    <ol id='chatlog' style='display: none'></ol>
+    <form id='login' method='post' action='nowhere'>
+      <fieldset>
+        <legend>Sign in</legend>
+        <ol>
+          <li>
+            <label for='name'>Name</label>
+            <input id='name' name='name' type='text'>
+          </li>
+          <li>
+            <label for='email'>Email (for gravatars)</label>
+            <input id='email' name='email' type='email'>
+          </li>
+          <li>
+            <input type='submit' value='Start yakking!'>
+          </li>
+        </ol>
+      </fieldset>
+    </form>
+    <form id='chatbox' method='post' style='display: none' action='nowhere'>
+      <fieldset>
+        <ol>
+          <li>
+            <label for='message'>Message</label>
+            <textarea cols='80' id='message' rows='3'></textarea>
+          </li>
+          <li>
+            <input type='submit' value='Send'>
+          </li>
+        </ol>
+      </fieldset>
+    </form>
+  </body>
+</html>

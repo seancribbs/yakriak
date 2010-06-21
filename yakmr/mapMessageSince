@@ -1,0 +1,7 @@
+function(object, keyData, arg){
+    var value = Riak.mapValuesJson(object)[0];
+    if(value.timestamp >= arg)
+        return [value];
+    else
+        return [];
+}
