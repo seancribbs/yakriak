@@ -1,6 +1,6 @@
 var YakRiak = function(){
     this.interval = 5000; // Polling interval: 5s
-    this.since = 0; // Epoch millis - change to new Date().getTime() after done testing
+    this.since = new Date().getTime(); // Epoch millis
     this.client = new RiakClient();
     this.bucket = new RiakBucket('messages', this.client);
     window.onunload = this.stop;

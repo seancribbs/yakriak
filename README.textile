@@ -9,6 +9,8 @@ h2. Features / Problems
 * Tested in Chrome, Safari, Firefox. Other browsers, caveat emptor.
 * Remembers your login credentials via unencrypted cookies.
 * Randomizes the polling interval to avoid dogpile effects.
+* Uses full-bucket map-reduce, so won't perform well at huge numbers of messages.
+* Use gravatar, should you decide not to remain anonymous.
 
 h2. Setup
 
