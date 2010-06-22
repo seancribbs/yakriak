@@ -1,9 +1,14 @@
+Function.prototype.bind = function(target){
+    var func = this;
+    return function(){ return func.apply(target, arguments); };
+}
+
 var YakRiak = function(){
-    this.interval = 5000; // Polling interval: 5s
-    this.since = new Date().getTime(); // Epoch millis
+    this.interval = 1000; // Polling interval: 1s (Use caution!)
+    this.since = new Date().getTime() - (60 * 60 * 1000); // Scope to the last hour initially
     this.client = new RiakClient();
     this.bucket = new RiakBucket('messages', this.client);
-    window.onunload = this.stop;
+    window.onunload = this.stop.bind(this);
 };
 
 YakRiak.prototype.poll = function(){
@@ -11,8 +16,17 @@ YakRiak.prototype.poll = function(){
     this.bucket.
         map({"bucket":"yakmr", "key":"mapMessageSince", "arg":this.since}).
         reduce({"bucket":"yakmr", "key":"reduceSortTimestamp", "keep":true}).
-        run(this.interval, function(){ yakriak._poll.apply(yakriak,arguments); });
+        run(this._poll.bind(this));
 };
+
+YakRiak.prototype.initialPoll = function(){
+    var yakriak = this;
+    this.bucket.
+        map({"bucket":"yakmr", "key":"mapMessageSince", "arg":this.since}).
+        reduce({"bucket":"yakmr", "key":"reduceSortTimestamp"}).
+        reduce({"bucket":"yakmr", "key":"reduceLimitLastN", "arg":25, "keep":true}).
+        run(this._poll.bind(this));
+}
 
 YakRiak.prototype._poll = function(successful, data, request){
     var yakriak = this;
@@ -20,7 +34,7 @@ YakRiak.prototype._poll = function(successful, data, request){
         var last_item = data[data.length - 1];
         if(last_item && last_item.timestamp)
             this.since = last_item.timestamp + 0.01; // Try to avoid duplicates on next poll
-        data.forEach(this.displayMessage);
+        data.forEach(this.displayMessage.bind(this));
     }
     this.pollingTimeout = setTimeout(function(){ yakriak.poll(); }, this.randomInterval());
 };
@@ -31,15 +45,14 @@ YakRiak.prototype.randomInterval = function(){
 };
 
 YakRiak.prototype.displayMessage = function(item){
-    var yakriak = this;
     if($('#' + item.key).length == 0){
         var elem = $('<li id="' + item.key + '" />');
         var avatar = $('<img />').attr('src', 'http://gravatar.com/avatar/' + item.gravatar + '?s=40');
-        var name = $('<span class="name">').text(item.name);
-        var message = $('<span class="message">').text(item.message);
+        var name = $('<span class="name">').html(item.name);
+        var message = $('<span class="message">').html(item.message);
         var timestamp = $('<span class="timestamp">').text(new Date(item.timestamp).toLocaleTimeString());
         elem.append(timestamp).append(avatar).append(name).append(message);
-        if(item.name == yakriak.name && item.gravatar == yakriak.gravatar)
+        if(item.name == this.name && item.gravatar == this.gravatar)
             elem.addClass('me');
         $('ol#chatlog').append(elem);
         $('ol#chatlog').scrollTop(elem.position().top);
@@ -78,7 +91,7 @@ YakRiak.prototype.start = function(name, email){
         }
         $('form#login').hide();
         $('ol#chatlog, form#chatbox').show();
-        this.poll();
+        this.initialPoll();
     } else {
         alert("Please enter a name for yourself. An email would be nice too (not sent over the wire).");
     }
