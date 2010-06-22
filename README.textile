@@ -1,0 +1,31 @@
+h1. yakriak
+
+A simple web-based chatroom app.  Designed as a proof-of-concept for
+Ben Black's Riak training at VelocityConf 2010.
+
+h2. Features / Problems
+
+* Everything is stored and served out of Riak. Take that, couchapps!
+* Tested in Chrome, Safari, Firefox. Other browsers, caveat emptor.
+* Remembers your login credentials via unencrypted cookies.
+* Randomizes the polling interval to avoid dogpile effects.
+
+h2. Setup
+
+# Startup Riak locally on the standard HTTP port (8098).
+# Join your local node to the cluster, if necessary.
+# Run the @load.sh@ bash script.
+# Visit "http://127.0.0.1:8098/riak/yak/index.html":http://127.0.0.1:8098/riak/yak/index.html
+
+h2. Learn more
+
+Read the source! The majority of the work is in @yakriak.js@, and the
+map and reduce functions in the @yakmr/@ directory.
+
+h2. Credit where credit's due
+
+* jQuery 1.4.2 (jQuery team)
+* riak-javascript-client (Basho)
+* json2.js (Douglas Crockford)
+* cookie.js (Maxime Haineault, John W. Long)
+* md5.js (Paul Johnston)
