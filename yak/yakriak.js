@@ -10,7 +10,7 @@ YakRiak.prototype.poll = function(){
     var yakriak = this;
     this.bucket.
         map({"bucket":"yakmr", "key":"mapMessageSince", "arg":this.since}).
-        reduce({"bucket":"yakmr", "key":"reduceSortTimestampReverse", "keep":true}).
+        reduce({"bucket":"yakmr", "key":"reduceSortTimestamp", "keep":true}).
         run(this.interval, function(){ yakriak._poll.apply(yakriak, arguments); });
 };
 
