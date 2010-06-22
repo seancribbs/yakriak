@@ -1,5 +1,10 @@
 #!/bin/sh
 
+echo "Setting default N value for messages, yak, yakmr to 7"
+for bucket in yak yakmr messages; do
+    curl -X PUT "http://127.0.0.1:8098/riak/$bucket" -H "Content-Type: application/json" -d '{"props":{"n_val":7}}'
+done
+
 function storeInRiak {
     echo "Storing $1 as $2";
     curl -X PUT "http://127.0.0.1:8098/riak/$1" -H "Content-Type: $2" --data-binary @$file
