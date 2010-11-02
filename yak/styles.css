@@ -30,8 +30,8 @@ ol#chatlog {
 }
 
 form#chatbox {
-   height: 20%;
-   min-height: 20%;
+   height: 75px;
+   min-height: 75px;
    width: 100%;
    min-width: 100%;
    position: fixed;
@@ -130,4 +130,9 @@ label {
 
 label + input {
    font-size: 18px;
+}
+
+input#message {
+   width: 99%;
+   max-width: 100%;
 }
