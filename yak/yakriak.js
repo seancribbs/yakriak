@@ -12,7 +12,6 @@ var YakRiak = function(){
 };
 
 YakRiak.prototype.poll = function(){
-    var yakriak = this;
     this.bucket.
         map({"bucket":"yakmr", "key":"mapMessageSince", "arg":this.since}).
         reduce({"bucket":"yakmr", "key":"reduceSortTimestamp", "keep":true}).
@@ -20,7 +19,6 @@ YakRiak.prototype.poll = function(){
 };
 
 YakRiak.prototype.initialPoll = function(){
-    var yakriak = this;
     this.bucket.
         map({"bucket":"yakmr", "key":"mapMessageSince", "arg":this.since}).
         reduce({"bucket":"yakmr", "key":"reduceSortTimestamp"}).

@@ -1,6 +1,6 @@
 function(values){
-    var values2 = values.filter(function(v){ return (v.not_found) ? false : true; });
-    return values2.sort(function(a,b){
-                           return a.timestamp - b.timestamp;
-                       });
+    return Riak.filterNotFound(values).
+        sort(function(a,b){
+                 return a.timestamp - b.timestamp;
+             });
 }
