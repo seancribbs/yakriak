@@ -52,8 +52,7 @@ YakRiak.prototype.displayMessage = function(item){
         elem.append(timestamp).append(avatar).append(name).append(message);
         if(item.name == this.name && item.gravatar == this.gravatar)
             elem.addClass('me');
-        $('ol#chatlog').append(elem);
-        $('ol#chatlog').scrollTop(elem.position().top);
+        $('ol#chatlog').append(elem).attr({ scrollTop: $('ol#chatlog').attr("scrollHeight") });
     }
 }
 
