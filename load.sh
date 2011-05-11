@@ -1,7 +1,11 @@
 #!/bin/sh
 
-if [[ ! -z $node ]]; then
-    node=127.0.0.1:8098
+# Allow running the script and specifiying an install target
+#   ./load.sh node-address:host
+if [ -n "$1" ] ; then
+  node=$1
+else
+  node="127.0.0.1:8098"
 fi
 
 function storeInRiak {
