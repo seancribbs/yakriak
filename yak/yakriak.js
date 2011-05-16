@@ -32,7 +32,7 @@ YakRiak.prototype._poll = function(successful, data, request){
         var last_item = data[data.length - 1];
         if(last_item && last_item.timestamp)
             this.since = last_item.timestamp + 0.01; // Try to avoid duplicates on next poll
-        data.forEach(this.displayMessage.bind(this));
+        $.each(data, this.displayMessage.bind(this));
     }
     this.pollingTimeout = setTimeout(function(){ yakriak.poll(); }, this.randomInterval());
 };
@@ -42,13 +42,13 @@ YakRiak.prototype.randomInterval = function(){
     return Math.round((Math.random()-0.5)*this.interval/2 + this.interval);
 };
 
-YakRiak.prototype.displayMessage = function(item){
+YakRiak.prototype.displayMessage = function(index, item){
     if($('#' + item.key).length == 0){
         var elem = $('<li id="' + item.key + '" />');
         var avatar = $('<img />').attr('src', 'http://gravatar.com/avatar/' + item.gravatar + '?s=40');
-        var name = $('<span class="name">').html(item.name);
-        var message = $('<span class="message">').html(item.message);
-        var timestamp = $('<span class="timestamp">').text(new Date(item.timestamp).toLocaleTimeString());
+        var name = $('<span />').addClass('name').html(item.name);
+        var message = $('<span />').addClass('message').html(item.message);
+        var timestamp = $('<span />').addClass('timestamp').text(new Date(item.timestamp).toLocaleTimeString());
         elem.append(timestamp).append(avatar).append(name).append(message);
         if(item.name == this.name && item.gravatar == this.gravatar)
             elem.addClass('me');
@@ -69,7 +69,7 @@ YakRiak.prototype.postMessage = function(message){
             'gravatar': this.gravatar,
             'timestamp': new Date().getTime()
         };
-        object.store(function(){ yakriak.displayMessage(object.body) });
+        object.store(function(){ yakriak.displayMessage(null, object.body) });
     }
     $('form#chatbox').get(0).reset();
 };
