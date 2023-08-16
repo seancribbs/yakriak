@@ -1,3 +1,5 @@
+**This repository is not maintained, use at your own risk.**
+
 h1. yakriak
 
 A simple web-based chatroom app.  Designed as a proof-of-concept for Ben Black's Riak training at VelocityConf 2010.
